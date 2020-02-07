@@ -7,14 +7,19 @@ FROM ubuntu:16.04
 MAINTAINER Amazon AI <sage-learner@amazon.com>
 
 
-RUN apt-get -y update && apt-get install -y --no-install-recommends \
+RUN apt-get -y update && \
+    apt-get install -y --no-install-recommends && \
+    apt-get install -y software-properties-common 
+
+RUN add-apt-repository -y ppa:deadsnakes/ppa && \
+    apt-get -y update && apt-get -y install python3.6 
+
+RUN apt-get install -y --no-install-recommends \
          wget \
-         python3.6 \
          nginx \
 		 libgcc-5-dev \
          ca-certificates \
     && rm -rf /var/lib/apt/lists/*
-
 # Here we get all python packages.
 # There's substantial overlap between scipy and numpy that we eliminate by
 # linking them together. Likewise, pip leaves the install caches populated which uses
